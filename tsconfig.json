@@ -2,11 +2,12 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
+    "esModuleInterop": true,
     "module": "NodeNext",
     "moduleResolution": "nodenext",
     "noEmit": true,
     "strict": true,
     "target": "ESNext"
   },
-  "include": ["src/**/*", "build.js", ".prettierrc.js"]
+  "include": ["src/**/*", "build.mjs", ".prettierrc.js"]
 }

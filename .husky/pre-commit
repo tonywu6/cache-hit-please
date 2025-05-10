@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-node build.js
+node build.mjs
 git add dist

@@ -3,7 +3,7 @@
     "@actions/cache": "^4.0.3",
     "@actions/core": "^1.11.1"
   },
-  "type": "module",
+  "type": "commonjs",
   "devDependencies": {
     "@types/node": "^22.15.17",
     "esbuild": "^0.25.4",

@@ -65071,11 +65071,11 @@ var require_cache3 = __commonJS({
 });
 
 // src/post.js
-var import_cache = __toESM(require_cache3(), 1);
-var import_core2 = __toESM(require_core(), 1);
+var import_cache = __toESM(require_cache3());
+var import_core2 = __toESM(require_core());
 
 // src/util.js
-var import_core = __toESM(require_core(), 1);
+var import_core = __toESM(require_core());
 function validateInput() {
   const paths = (0, import_core.getMultilineInput)("path", { required: true });
   const deps = (0, import_core.getMultilineInput)("deps", { required: true });
