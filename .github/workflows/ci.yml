@@ -25,6 +25,8 @@ jobs:
             ${{hashFiles('package**.json')}}
           path: |
             temp.txt
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         id: cache
 
     outputs:
