@@ -65102,7 +65102,7 @@ function dbg(v) {
 }
 function deriveKeys(deps) {
   const keys = [];
-  for (let i = 0; i < deps.length; i++) {
+  for (let i = 1; i <= deps.length; i++) {
     keys.push(deps.slice(0, i).join("-"));
   }
   return keys;
