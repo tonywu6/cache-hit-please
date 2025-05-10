@@ -18,6 +18,7 @@ jobs:
             ${{runner.arch}}
             ${{runner.os}}
             ${{hashFiles('package**.json')}}
+            ${{github.run_id}}
           path: |
             temp.txt
         id: cache
