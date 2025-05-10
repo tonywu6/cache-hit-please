@@ -6,6 +6,11 @@
   "type": "module",
   "devDependencies": {
     "@types/node": "^22.15.17",
+    "esbuild": "^0.25.4",
+    "husky": "^9.1.7",
     "prettier": "^3.5.3"
+  },
+  "scripts": {
+    "prepare": "husky"
   }
 }

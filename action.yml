@@ -1,15 +1,12 @@
 name: Cache Hit Please
 
 description: |
-  Managed `actions/cache` with:
-
-  - Segmented restore keys to be able to reuse caches as much as possible
-  - Cache keys as output to avoid repeating yourself
+  Managed `actions/cache` with segmented cache keys.
 
 runs:
   using: "node20"
-  main: "src/main.js"
-  post: "src/post.js"
+  main: "dist/main.js"
+  post: "dist/post.js"
 
 inputs:
   deps:
