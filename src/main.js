@@ -1,5 +1,5 @@
 import { restoreCache } from "@actions/cache";
-import { getInput, info, setOutput, warning } from "@actions/core";
+import { getInput, info, saveState, setOutput, warning } from "@actions/core";
 
 import { tryCatch, validateInput } from "./util.js";
 
@@ -8,16 +8,19 @@ tryCatch(async () => {
 
   const matchedKey = await restoreCache(paths, keys[0], keys);
 
-  if (matchedKey === keys[0]) {
-    info(`Cache hit with fresh key ${JSON.stringify(matchedKey)}`);
+  const cacheHit = matchedKey === keys[0];
+  if (cacheHit) {
+    info(`cache hit with fresh key ${JSON.stringify(matchedKey)}`);
   } else if (matchedKey) {
-    info(`Cache hit with stale key ${JSON.stringify(matchedKey)}`);
+    info(`cache hit with stale key ${JSON.stringify(matchedKey)}`);
   } else {
-    warning(`Cache miss with deps ${JSON.stringify(deps)}`);
+    warning(`cache miss with deps ${JSON.stringify(deps)}`);
   }
+
+  saveState("cache-hit", cacheHit);
+  setOutput("cache-hit", cacheHit);
 
   setOutput("primary-key", keys[0]);
   setOutput("restore-key", keys.join("\n"));
-  setOutput("cache-hit", matchedKey === keys[0]);
   setOutput("path", getInput("path"));
 });

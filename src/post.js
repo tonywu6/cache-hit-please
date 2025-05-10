@@ -1,13 +1,23 @@
 import { saveCache } from "@actions/cache";
-import { warning } from "@actions/core";
+import { getState, warning } from "@actions/core";
+import { exec } from "@actions/exec";
 
-import { err, tryCatch, validateInput } from "./util.js";
+import { tryCatch, validateInput } from "./util.js";
 
 tryCatch(async () => {
   const { paths, keys } = validateInput();
+
+  if (getState("cache-hit") === "true") {
+    try {
+      exec("gh", ["cache", "delete", keys[0]]);
+    } catch (e) {
+      warning(`could not evict cache: ${e}`);
+    }
+  }
+
   try {
     await saveCache(paths, keys[0]);
   } catch (e) {
-    warning(err(e));
+    warning(String(e));
   }
 });

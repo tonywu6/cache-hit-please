@@ -19776,14 +19776,14 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       });
     }
     exports2.group = group;
-    function saveState(name, value) {
+    function saveState2(name, value) {
       const filePath = process.env["GITHUB_STATE"] || "";
       if (filePath) {
         return (0, file_command_1.issueFileCommand)("STATE", (0, file_command_1.prepareKeyValueMessage)(name, value));
       }
       (0, command_1.issueCommand)("save-state", { name }, (0, utils_1.toCommandValue)(value));
     }
-    exports2.saveState = saveState;
+    exports2.saveState = saveState2;
     function getState(name) {
       return process.env[`STATE_${name}`] || "";
     }
@@ -65112,16 +65112,18 @@ function deriveKeys(deps) {
 tryCatch(async () => {
   const { paths, deps, keys } = validateInput();
   const matchedKey = await (0, import_cache.restoreCache)(paths, keys[0], keys);
-  if (matchedKey === keys[0]) {
-    (0, import_core2.info)(`Cache hit with fresh key ${JSON.stringify(matchedKey)}`);
+  const cacheHit = matchedKey === keys[0];
+  if (cacheHit) {
+    (0, import_core2.info)(`cache hit with fresh key ${JSON.stringify(matchedKey)}`);
   } else if (matchedKey) {
-    (0, import_core2.info)(`Cache hit with stale key ${JSON.stringify(matchedKey)}`);
+    (0, import_core2.info)(`cache hit with stale key ${JSON.stringify(matchedKey)}`);
   } else {
-    (0, import_core2.warning)(`Cache miss with deps ${JSON.stringify(deps)}`);
+    (0, import_core2.warning)(`cache miss with deps ${JSON.stringify(deps)}`);
   }
+  (0, import_core2.saveState)("cache-hit", cacheHit);
+  (0, import_core2.setOutput)("cache-hit", cacheHit);
   (0, import_core2.setOutput)("primary-key", keys[0]);
   (0, import_core2.setOutput)("restore-key", keys.join("\n"));
-  (0, import_core2.setOutput)("cache-hit", matchedKey === keys[0]);
   (0, import_core2.setOutput)("path", (0, import_core2.getInput)("path"));
 });
 /*! Bundled license information:

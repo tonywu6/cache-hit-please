@@ -19419,7 +19419,7 @@ var require_exec = __commonJS({
     exports2.getExecOutput = exports2.exec = void 0;
     var string_decoder_1 = require("string_decoder");
     var tr = __importStar2(require_toolrunner());
-    function exec(commandLine, args, options) {
+    function exec2(commandLine, args, options) {
       return __awaiter2(this, void 0, void 0, function* () {
         const commandArgs = tr.argStringToArray(commandLine);
         if (commandArgs.length === 0) {
@@ -19431,7 +19431,7 @@ var require_exec = __commonJS({
         return runner.exec();
       });
     }
-    exports2.exec = exec;
+    exports2.exec = exec2;
     function getExecOutput(commandLine, args, options) {
       var _a, _b;
       return __awaiter2(this, void 0, void 0, function* () {
@@ -19454,7 +19454,7 @@ var require_exec = __commonJS({
           }
         };
         const listeners = Object.assign(Object.assign({}, options === null || options === void 0 ? void 0 : options.listeners), { stdout: stdOutListener, stderr: stdErrListener });
-        const exitCode = yield exec(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
+        const exitCode = yield exec2(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
         stdout += stdoutDecoder.end();
         stderr += stderrDecoder.end();
         return {
@@ -19532,12 +19532,12 @@ var require_platform = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.getDetails = exports2.isLinux = exports2.isMacOS = exports2.isWindows = exports2.arch = exports2.platform = void 0;
     var os_1 = __importDefault2(require("os"));
-    var exec = __importStar2(require_exec());
+    var exec2 = __importStar2(require_exec());
     var getWindowsInfo = () => __awaiter2(void 0, void 0, void 0, function* () {
-      const { stdout: version } = yield exec.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"', void 0, {
+      const { stdout: version } = yield exec2.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"', void 0, {
         silent: true
       });
-      const { stdout: name } = yield exec.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Caption"', void 0, {
+      const { stdout: name } = yield exec2.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Caption"', void 0, {
         silent: true
       });
       return {
@@ -19547,7 +19547,7 @@ var require_platform = __commonJS({
     });
     var getMacOsInfo = () => __awaiter2(void 0, void 0, void 0, function* () {
       var _a, _b, _c, _d;
-      const { stdout } = yield exec.getExecOutput("sw_vers", void 0, {
+      const { stdout } = yield exec2.getExecOutput("sw_vers", void 0, {
         silent: true
       });
       const version = (_b = (_a = stdout.match(/ProductVersion:\s*(.+)/)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : "";
@@ -19558,7 +19558,7 @@ var require_platform = __commonJS({
       };
     });
     var getLinuxInfo = () => __awaiter2(void 0, void 0, void 0, function* () {
-      const { stdout } = yield exec.getExecOutput("lsb_release", ["-i", "-r", "-s"], {
+      const { stdout } = yield exec2.getExecOutput("lsb_release", ["-i", "-r", "-s"], {
         silent: true
       });
       const [name, version] = stdout.trim().split("\n");
@@ -19784,10 +19784,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       (0, command_1.issueCommand)("save-state", { name }, (0, utils_1.toCommandValue)(value));
     }
     exports2.saveState = saveState;
-    function getState(name) {
+    function getState2(name) {
       return process.env[`STATE_${name}`] || "";
     }
-    exports2.getState = getState;
+    exports2.getState = getState2;
     function getIDToken(aud) {
       return __awaiter2(this, void 0, void 0, function* () {
         return yield oidc_utils_1.OidcClient.getIDToken(aud);
@@ -22784,7 +22784,7 @@ var require_cacheUtils = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.getRuntimeToken = exports2.getCacheVersion = exports2.assertDefined = exports2.getGnuTarPathOnWindows = exports2.getCacheFileName = exports2.getCompressionMethod = exports2.unlinkFile = exports2.resolvePaths = exports2.getArchiveFileSizeInBytes = exports2.createTempDirectory = void 0;
     var core = __importStar2(require_core());
-    var exec = __importStar2(require_exec());
+    var exec2 = __importStar2(require_exec());
     var glob = __importStar2(require_glob());
     var io = __importStar2(require_io());
     var crypto = __importStar2(require("crypto"));
@@ -22868,7 +22868,7 @@ var require_cacheUtils = __commonJS({
         additionalArgs.push("--version");
         core.debug(`Checking ${app} ${additionalArgs.join(" ")}`);
         try {
-          yield exec.exec(`${app}`, additionalArgs, {
+          yield exec2.exec(`${app}`, additionalArgs, {
             ignoreReturnCode: true,
             silent: true,
             listeners: {
@@ -65073,6 +65073,7 @@ var require_cache3 = __commonJS({
 // src/post.js
 var import_cache = __toESM(require_cache3());
 var import_core2 = __toESM(require_core());
+var import_exec = __toESM(require_exec());
 
 // src/util.js
 var import_core = __toESM(require_core());
@@ -65111,10 +65112,17 @@ function deriveKeys(deps) {
 // src/post.js
 tryCatch(async () => {
   const { paths, keys } = validateInput();
+  if ((0, import_core2.getState)("cache-hit") === "true") {
+    try {
+      (0, import_exec.exec)("gh", ["cache", "delete", keys[0]]);
+    } catch (e) {
+      (0, import_core2.warning)(`could not evict cache: ${e}`);
+    }
+  }
   try {
     await (0, import_cache.saveCache)(paths, keys[0]);
   } catch (e) {
-    (0, import_core2.warning)(err(e));
+    (0, import_core2.warning)(String(e));
   }
 });
 /*! Bundled license information:

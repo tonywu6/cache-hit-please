@@ -7,6 +7,10 @@ jobs:
   main:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      actions: write
+
     steps:
       - uses: actions/checkout@v4
 
@@ -18,7 +22,6 @@ jobs:
             ${{runner.arch}}
             ${{runner.os}}
             ${{hashFiles('package**.json')}}
-            ${{github.run_id}}
           path: |
             temp.txt
         id: cache
