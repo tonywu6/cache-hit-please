@@ -1,10 +1,10 @@
-import { getMultilineInput, setFailed } from "@actions/core";
+import { debug, getMultilineInput, setFailed } from "@actions/core";
 
 export function validateInput() {
   const paths = getMultilineInput("path", { required: true });
   const deps = getMultilineInput("deps", { required: true });
   const keys = deriveKeys(deps);
-  return { paths, deps, keys };
+  return dbg({ paths, deps, keys });
 }
 
 /**
@@ -27,6 +27,16 @@ export function err(e) {
   } else {
     return String(e);
   }
+}
+
+/**
+ * @template T
+ * @param {T} v
+ * @returns {T}
+ */
+export function dbg(v) {
+  debug(JSON.stringify(v, null, 2));
+  return v;
 }
 
 /**

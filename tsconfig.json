@@ -9,5 +9,5 @@
     "strict": true,
     "target": "ESNext"
   },
-  "include": ["src/**/*", "build.mjs", ".prettierrc.js"]
+  "include": ["src/**/*", "build.mjs", ".prettierrc.mjs"]
 }

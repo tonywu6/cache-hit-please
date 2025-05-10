@@ -10,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - run: echo ${{github.run_id}} > temp.txt
+
       - uses: ./
         with:
           deps: |
@@ -17,7 +19,7 @@ jobs:
             ${{runner.os}}
             ${{hashFiles('package**.json')}}
           path: |
-            node_modules
+            temp.txt
         id: cache
 
     outputs:
@@ -33,7 +35,7 @@ jobs:
       - uses: actions/cache/restore@v4
         with:
           path: |
-            node_modules
+            temp.txt
           key: |
             ${{needs.main.outputs.cache-primary-key}}
           restore-keys: |
