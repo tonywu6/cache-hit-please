@@ -1,0 +1,37 @@
+name: Cache Hit Please
+
+description: |
+  Managed `actions/cache` with:
+
+  - Segmented restore keys to be able to reuse caches as much as possible
+  - Cache keys as output to avoid repeating yourself
+
+runs:
+  using: "node20"
+  main: "src/main.js"
+  post: "src/post.js"
+
+inputs:
+  deps:
+    required: true
+    description: |
+      Dependencies of the cache, as a list of strings/hashes, ordered from the
+      most stable to the most variable.
+
+  path:
+    required: true
+    description: |
+      Paths to cache.
+
+outputs:
+  primary-key:
+    description: |
+      The calculated cache key.
+
+  restore-key:
+    description: |
+      The calculated list of restore keys.
+
+  cache-hit:
+    description: |
+      A boolean value to indicate an exact match was found for the key.

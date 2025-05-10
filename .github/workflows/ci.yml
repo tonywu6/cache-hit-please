@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./
+        with:
+          deps: |
+            ${{runner.arch}}
+            ${{runner.os}}
+            ${{hashFiles('package**.json')}}
+          path: |
+            node_modules
+        id: cache
+
+    outputs:
+      cache-primary-key: ${{steps.cache.outputs.primary-key}}
+      cache-restore-key: ${{steps.cache.outputs.restore-key}}
+
+  reuse:
+    runs-on: ubuntu-latest
+
+    needs: [main]
+
+    steps:
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+          key: |
+            ${{needs.main.outputs.cache-primary-key}}
+          restore-keys: |
+            ${{needs.main.outputs.cache-restore-key}}
+          fail-on-cache-miss: true
+          lookup-only: true

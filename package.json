@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@actions/cache": "^4.0.3",
+    "@actions/core": "^1.11.1"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^22.15.17",
+    "prettier": "^3.5.3"
+  }
+}
