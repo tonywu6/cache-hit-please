@@ -12,7 +12,10 @@ tryCatch(async () => {
   if (getState("cache-hit") === "true") {
     try {
       await exec("gh", ["cache", "delete", keys[0]], {
-        env: { GH_TOKEN: String(process.env.GITHUB_TOKEN) },
+        env: {
+          ...process.env,
+          GH_TOKEN: String(process.env.GITHUB_TOKEN),
+        },
       });
     } catch (e) {
       warning(`could not evict cache: ${e}`);

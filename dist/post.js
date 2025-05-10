@@ -65116,7 +65116,10 @@ tryCatch(async () => {
   if ((0, import_core2.getState)("cache-hit") === "true") {
     try {
       await (0, import_exec.exec)("gh", ["cache", "delete", keys[0]], {
-        env: { GH_TOKEN: String(import_node_process.default.env.GITHUB_TOKEN) }
+        env: {
+          ...import_node_process.default.env,
+          GH_TOKEN: String(import_node_process.default.env.GITHUB_TOKEN)
+        }
       });
     } catch (e) {
       (0, import_core2.warning)(`could not evict cache: ${e}`);
