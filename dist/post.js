@@ -23491,9 +23491,9 @@ var require_log = __commonJS({
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var node_os_1 = require("node:os");
     var node_util_1 = tslib_1.__importDefault(require("node:util"));
-    var process2 = tslib_1.__importStar(require("node:process"));
+    var process3 = tslib_1.__importStar(require("node:process"));
     function log(message, ...args) {
-      process2.stderr.write(`${node_util_1.default.format(message, ...args)}${node_os_1.EOL}`);
+      process3.stderr.write(`${node_util_1.default.format(message, ...args)}${node_os_1.EOL}`);
     }
   }
 });
@@ -24694,13 +24694,13 @@ var require_userAgentPlatform = __commonJS({
     exports2.setPlatformSpecificData = setPlatformSpecificData;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var os = tslib_1.__importStar(require("node:os"));
-    var process2 = tslib_1.__importStar(require("node:process"));
+    var process3 = tslib_1.__importStar(require("node:process"));
     function getHeaderName() {
       return "User-Agent";
     }
     async function setPlatformSpecificData(map) {
-      if (process2 && process2.versions) {
-        const versions = process2.versions;
+      if (process3 && process3.versions) {
+        const versions = process3.versions;
         if (versions.bun) {
           map.set("Bun", versions.bun);
         } else if (versions.deno) {
@@ -28049,13 +28049,13 @@ var require_userAgentPlatform2 = __commonJS({
     exports2.setPlatformSpecificData = setPlatformSpecificData;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var os = tslib_1.__importStar(require("node:os"));
-    var process2 = tslib_1.__importStar(require("node:process"));
+    var process3 = tslib_1.__importStar(require("node:process"));
     function getHeaderName() {
       return "User-Agent";
     }
     async function setPlatformSpecificData(map) {
-      if (process2 && process2.versions) {
-        const versions = process2.versions;
+      if (process3 && process3.versions) {
+        const versions = process3.versions;
         if (versions.bun) {
           map.set("Bun", versions.bun);
         } else if (versions.deno) {
@@ -65071,6 +65071,7 @@ var require_cache3 = __commonJS({
 });
 
 // src/post.js
+var import_node_process = __toESM(require("node:process"));
 var import_cache = __toESM(require_cache3());
 var import_core2 = __toESM(require_core());
 var import_exec = __toESM(require_exec());
@@ -65114,7 +65115,9 @@ tryCatch(async () => {
   const { paths, keys } = validateInput();
   if ((0, import_core2.getState)("cache-hit") === "true") {
     try {
-      (0, import_exec.exec)("gh", ["cache", "delete", keys[0]]);
+      await (0, import_exec.exec)("gh", ["cache", "delete", keys[0]], {
+        env: { GH_TOKEN: String(import_node_process.default.env.GITHUB_TOKEN) }
+      });
     } catch (e) {
       (0, import_core2.warning)(`could not evict cache: ${e}`);
     }
