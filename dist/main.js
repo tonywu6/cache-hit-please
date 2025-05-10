@@ -19682,7 +19682,7 @@ var require_core = __commonJS({
       process.env["PATH"] = `${inputPath}${path.delimiter}${process.env["PATH"]}`;
     }
     exports2.addPath = addPath;
-    function getInput(name, options) {
+    function getInput2(name, options) {
       const val = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || "";
       if (options && options.required && !val) {
         throw new Error(`Input required and not supplied: ${name}`);
@@ -19692,9 +19692,9 @@ var require_core = __commonJS({
       }
       return val.trim();
     }
-    exports2.getInput = getInput;
+    exports2.getInput = getInput2;
     function getMultilineInput2(name, options) {
-      const inputs = getInput(name, options).split("\n").filter((x) => x !== "");
+      const inputs = getInput2(name, options).split("\n").filter((x) => x !== "");
       if (options && options.trimWhitespace === false) {
         return inputs;
       }
@@ -19704,7 +19704,7 @@ var require_core = __commonJS({
     function getBooleanInput(name, options) {
       const trueValue = ["true", "True", "TRUE"];
       const falseValue = ["false", "False", "FALSE"];
-      const val = getInput(name, options);
+      const val = getInput2(name, options);
       if (trueValue.includes(val))
         return true;
       if (falseValue.includes(val))
@@ -65112,9 +65112,10 @@ function deriveKeys(deps) {
 tryCatch(async () => {
   const { paths, keys } = validateInput();
   const matchedKey = await (0, import_cache.restoreCache)(paths, keys[0], keys);
-  (0, import_core2.setOutput)("cache-hit", matchedKey === keys[0]);
   (0, import_core2.setOutput)("primary-key", keys[0]);
   (0, import_core2.setOutput)("restore-key", keys.join("\n"));
+  (0, import_core2.setOutput)("cache-hit", matchedKey === keys[0]);
+  (0, import_core2.setOutput)("path", (0, import_core2.getInput)("path"));
 });
 /*! Bundled license information:
 

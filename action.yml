@@ -1,7 +1,7 @@
 name: Cache Hit Please
 
 description: |
-  Managed `actions/cache` with segmented cache keys.
+  Managed `actions/cache` with segmented cache keys and more outputs.
 
 runs:
   using: "node20"
@@ -32,3 +32,7 @@ outputs:
   cache-hit:
     description: |
       A boolean value to indicate an exact match was found for the key.
+
+  path:
+    description: |
+      The original `path` parameter.
